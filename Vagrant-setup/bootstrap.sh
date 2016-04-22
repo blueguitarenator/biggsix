@@ -91,7 +91,21 @@ CREATE DATABASE $APP_DB_NAME WITH OWNER=$APP_DB_USER
                                   LC_CTYPE='en_US.utf8'
                                   ENCODING='UTF8'
                                   TEMPLATE=template0;
+
+-- Create the database user:
+CREATE USER biggsixtest WITH PASSWORD '$APP_DB_PASS';
+
+-- Create the database:
+CREATE DATABASE biggsixtest WITH OWNER=biggsixtest
+                                  LC_COLLATE='en_US.utf8'
+                                  LC_CTYPE='en_US.utf8'
+                                  ENCODING='UTF8'
+                                  TEMPLATE=template0;
 \connect $APP_DB_NAME
+
+\list
+
+EOF
 
 # Tag the provision time:
 date > "$PROVISIONED_ON"
