@@ -1,12 +1,14 @@
 package service
 
-import dao.{ PasswordDao, UserDao }
-import model.{ User, UserPassword }
+import dao.{PasswordDao, UserDao}
+import model.{User, UserPassword}
 import router.UserDto
+import spray.http.StatusCodes._
 import utils.DatabaseConfig._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 
 trait UserService {
@@ -37,6 +39,16 @@ object UserService extends UserService {
   def initDb(): Unit = {
     userDao.create
     passwordDao.create
+
+    getAll() onSuccess { case users =>
+      if (users.size < 1) insertTestUser
+    }
+  }
+
+  private def insertTestUser  {
+    println("inserting test user")
+    val user = new UserDto("test1@test.com", Some("test"), Some("tester"), "123434")
+    add(user)
   }
 
   override def add(user: UserDto): Future[Option[User]] = db.run {
