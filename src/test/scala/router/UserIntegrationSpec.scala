@@ -48,7 +48,7 @@ class UserIntegrationSpec extends Specification with Specs2RouteTest with UserRo
     }
 
     "return the correct user for POST requests to users path" in this {
-      Post("/users", UserDto("test4@gmail.com", Some("name4"), Some("surname4"), "password1")) ~> addCredentials(user) ~> userOperations ~> check {
+      Post("/users", UserDto("test4@gmail.com", "name4", "surname4", "password1")) ~> addCredentials(user) ~> userOperations ~> check {
         status mustEqual StatusCodes.Created
         responseAs[User] === User(4, "test4@gmail.com", Some("name4"), Some("surname4"), Some(4))
       }

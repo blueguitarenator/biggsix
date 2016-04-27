@@ -16,7 +16,7 @@ trait UserRouter extends HttpService with UserRouterDoc {
 
   val userService: UserService
 
-  val userOperations: Route = postRoute ~ readRoute ~ readAllRoute ~ deleteRoute ~ sayHello
+  val userOperations: Route = postRoute ~ readRoute ~ readAllRoute ~ deleteRoute
 
   override def readRoute = path("users" / IntNumber) { userId =>
       get {
@@ -74,13 +74,13 @@ trait UserRouter extends HttpService with UserRouterDoc {
       }
     }
 
-  private def sayHello = {
-    get{
-      path("sayhi"){
-        detach(){
-          complete("Hi ho")
-        }
-      }
-    }
-  }
+//  private def sayHello = {
+//    get{
+//      path("sayhi"){
+//        detach(){
+//          complete("Hi ho")
+//        }
+//      }
+//    }
+//  }
 }

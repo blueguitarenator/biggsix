@@ -1,6 +1,5 @@
 package utils
 
-import dao.{ UserDao, PasswordDao }
 import model.{ User, UserPassword }
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAfterEach
@@ -27,27 +26,27 @@ object DatabaseSupportSpec {
 
 trait SpecSupport extends Specification with BeforeAfterEach {
 
-  def createSchema = {
-    val dropAll = (PasswordDao.passwords.schema ++ UserDao.users.schema).drop
-
-    val createAll =
-      DBIO.seq(
-        (PasswordDao.passwords.schema ++ UserDao.users.schema).create,
-        PasswordDao.passwords ++= DatabaseSupportSpec.passwords,
-        UserDao.users ++= DatabaseSupportSpec.users
-      )
-
-    val results = db.run(MTable.getTables).flatMap {
-      tables => if (tables.toList.size > 1) {
-        db.run(dropAll).flatMap(_ => db.run(createAll))
-      } else db.run(createAll)
-    }
-
-    Await.result(results, Duration.Inf)
-  }
+//  def createSchema = {
+//    val dropAll = (PasswordDao.passwords.schema ++ UserDao.users.schema).drop
+//
+//    val createAll =
+//      DBIO.seq(
+//        (PasswordDao.passwords.schema ++ UserDao.users.schema).create,
+//        PasswordDao.passwords ++= DatabaseSupportSpec.passwords,
+//        UserDao.users ++= DatabaseSupportSpec.users
+//      )
+//
+//    val results = db.run(MTable.getTables).flatMap {
+//      tables => if (tables.toList.size > 1) {
+//        db.run(dropAll).flatMap(_ => db.run(createAll))
+//      } else db.run(createAll)
+//    }
+//
+//    Await.result(results, Duration.Inf)
+//  }
 
   override def before: Unit= {
-    createSchema
+    //createSchema
   }
 
   override def after: Unit= { }

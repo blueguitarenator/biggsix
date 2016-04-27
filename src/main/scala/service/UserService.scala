@@ -65,7 +65,6 @@ object UserService extends UserService {
     } yield (user)
   }
 
-
   override def getUser(email: String): Future[Option[(UserRow, PasswordRow)]] = db.run {
     (for {
       user <- dao.Tables.User.filter(_.email === email)
