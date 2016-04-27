@@ -1,6 +1,5 @@
 package router
 
-import dao.Tables._
 
 import service.UserService
 import spray.http.MediaTypes._
@@ -9,7 +8,7 @@ import spray.httpx.SprayJsonSupport._
 import spray.routing.{ HttpService, Route }
 import scala.util.{Failure, Success}
 import scala.concurrent.ExecutionContext.Implicits.global
-
+import router.UserJsonProtocol._
 
 // this trait defines our service behavior independently from the service actor
 trait UserRouter extends HttpService with UserRouterDoc {
