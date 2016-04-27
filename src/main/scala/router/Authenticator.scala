@@ -8,9 +8,6 @@ import spray.routing.directives.AuthMagnet
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-/**
- * Created by gneotux on 20/03/15.
- */
 trait Authenticator {
 
   def userService: UserService
@@ -22,8 +19,8 @@ trait Authenticator {
      }{
        userPass =>
          // TODO Better take a look at Scalaz OptionT http://underscore.io/blog/posts/2013/12/20/scalaz-monad-transformers.html#fnref:scalaz-contrib
-         userService.getUser(userPass.user).map(_.map{
-           case tup : (UserRow, PasswordRow) if userService.passwordMatches(tup._2, userPass.pass) => AuthInfo(tup._1)
+         userService.getPerson(userPass.user).map(_.map{
+           case tup : (PersonRow, PasswordRow) if userService.passwordMatches(tup._2, userPass.pass) => AuthInfo(tup._1)
          })
      }
     }

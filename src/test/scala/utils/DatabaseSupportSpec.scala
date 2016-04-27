@@ -1,6 +1,6 @@
 package utils
 
-import model.{ User, UserPassword }
+import dao.Tables._
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAfterEach
 import slick.jdbc.meta.MTable
@@ -13,14 +13,14 @@ import scala.concurrent.duration.Duration
 object DatabaseSupportSpec {
 
   lazy val passwords = Seq(
-    UserPassword(1, Some("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO6AADKjaGqh/6l3RzWitAWelWCQxffUC"), "$2a$10$U3gBQ50FY5qiQ5XeQKgWwO"),
-    UserPassword(2, Some("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO6AADKjaGqh/6l3RzWitAWelWCQxffUC"), "$2a$10$U3gBQ50FY5qiQ5XeQKgWwO"),
-    UserPassword(3, Some("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO6AADKjaGqh/6l3RzWitAWelWCQxffUC"), "$2a$10$U3gBQ50FY5qiQ5XeQKgWwO")
+    PasswordRow(1, Some("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO6AADKjaGqh/6l3RzWitAWelWCQxffUC"), Option("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO")),
+    PasswordRow(2, Some("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO6AADKjaGqh/6l3RzWitAWelWCQxffUC"), Option("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO")),
+    PasswordRow(3, Some("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO6AADKjaGqh/6l3RzWitAWelWCQxffUC"), Option("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO"))
   )
   lazy val users = Seq(
-    User(1, "test1@test.com", Some("name1"), Some("surname1"), Some(1)),
-    User(2, "test2@test.com", Some("name2"), Some("surname2"), Some(2)),
-    User(3, "test3@test.com", Some("name3"), Some("surname3"), Some(3))
+    UserRow(1, "test1@test.com", "name1", "surname1", 1, "now"),
+    UserRow(2, "test2@test.com", "name2", "surname2", 2, "now"),
+    UserRow(3, "test3@test.com", "name3", "surname3", 3, "now")
   )
 }
 

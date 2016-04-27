@@ -12,33 +12,33 @@ import com.github.t3hnar.bcrypt.{ Password, generateSalt }
 
 trait UserService {
 
-  def add(user: UserDto): Future[Option[UserRow]]
+  def add(user: UserDto): Future[Option[PersonRow]]
 
-  def getAll(): Future[Seq[UserRow]]
+  def getAll(): Future[Seq[PersonRow]]
 
-  def get(id: Long): Future[Option[UserRow]]
+  def get(id: Long): Future[Option[PersonRow]]
 
-  def getUser(email: String): Future[Option[(UserRow, PasswordRow)]]
+  def getPerson(email: String): Future[Option[(PersonRow, PasswordRow)]]
 
   def delete(id: Long):Future[Int]
 
   def passwordMatches(passwordRow: PasswordRow, password: String): Boolean
 
-  //def populateUser: UserDto => User = (userDto: UserDto) => User(0, userDto.email, userDto.name, userDto.surname)
+  //def populatePerson: UserDto => Person = (userDto: UserDto) => Person(0, userDto.email, userDto.name, userDto.surname)
 }
 
 object UserService extends UserService {
 
-  def filterQuery(id: Long): Query[User, UserRow, Seq] =
-    User.filter(_.id === id)
+  def filterQuery(id: Long): Query[Person, PersonRow, Seq] =
+    Person.filter(_.id === id)
 
   override def delete(id: Long):Future[Int] = {
     import slick.driver.PostgresDriver.api._
     db.run(filterQuery(id).delete)
   }
 
-  override def getAll(): Future[Seq[UserRow]] = db.run {
-      getAllUser
+  override def getAll(): Future[Seq[PersonRow]] = db.run {
+      getAllPerson
   }
 
   override def passwordMatches(passwordRow: PasswordRow, password: String): Boolean = {
@@ -50,33 +50,33 @@ object UserService extends UserService {
     }
   }
 
-  override def add(user: UserDto): Future[Option[UserRow]] = db.run {
+  override def add(user: UserDto): Future[Option[PersonRow]] = db.run {
     val salt = generateSalt
     for {
       pid <- doAddPassword(PasswordRow(0, Some(user.password.bcrypt(salt)), Some(salt)))
-      userId <- doAddUser(UserRow(0, user.email, user.name, user.surname, pid, "now"))
-      user <- getUser(userId)
+      userId <- doAddPerson(PersonRow(0, user.email, user.name, user.surname, pid, "now"))
+      user <- getPerson(userId)
     } yield user
   }
 
-  override def get(id: Long): Future[Option[UserRow]] = db.run {
+  override def get(id: Long): Future[Option[PersonRow]] = db.run {
     for {
-      user <- getUser(id)
+      user <- getPerson(id)
     } yield (user)
   }
 
-  override def getUser(email: String): Future[Option[(UserRow, PasswordRow)]] = db.run {
+  override def getPerson(email: String): Future[Option[(PersonRow, PasswordRow)]] = db.run {
     (for {
-      user <- dao.Tables.User.filter(_.email === email)
+      user <- dao.Tables.Person.filter(_.email === email)
       password <- dao.Tables.Password.filter(_.id === user.id)
     } yield (user, password)).result.headOption
   }
 
-  private def getAllUser(): DBIO[Seq[UserRow]] = User.result
-  private def getUser(id: Long): DBIO[Option[UserRow]] = User.filter(_.id === id).result.headOption
-  private def getUserRow(id: Long): DBIO[Option[UserRow]] = User.filter(_.id === id).result.headOption
+  private def getAllPerson(): DBIO[Seq[PersonRow]] = Person.result
+  private def getPerson(id: Long): DBIO[Option[PersonRow]] = Person.filter(_.id === id).result.headOption
+  private def getPersonRow(id: Long): DBIO[Option[PersonRow]] = Person.filter(_.id === id).result.headOption
 
   private def doAddPassword(p: PasswordRow): DBIO[Long] = (dao.Tables.Password returning dao.Tables.Password.map(_.id)) += p
-  private def doAddUser(p: UserRow): DBIO[Long] = (dao.Tables.User returning dao.Tables.User.map(_.id)) += p
+  private def doAddPerson(p: PersonRow): DBIO[Long] = (dao.Tables.Person returning dao.Tables.Person.map(_.id)) += p
 
 }

@@ -1,6 +1,5 @@
 package router
 
-
 import service.UserService
 import spray.http.MediaTypes._
 import spray.http.StatusCodes._
@@ -74,13 +73,4 @@ trait UserRouter extends HttpService with UserRouterDoc {
       }
     }
 
-//  private def sayHello = {
-//    get{
-//      path("sayhi"){
-//        detach(){
-//          complete("Hi ho")
-//        }
-//      }
-//    }
-//  }
 }
