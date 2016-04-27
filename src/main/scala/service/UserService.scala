@@ -8,7 +8,9 @@ import dao.Tables._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import com.github.t3hnar.bcrypt.{ Password, generateSalt }
+import com.github.t3hnar.bcrypt.{Password, generateSalt}
+import org.joda.time.LocalDateTime
+import org.joda.time.format.DateTimeFormat
 
 trait UserService {
 
@@ -28,7 +30,7 @@ trait UserService {
 }
 
 object UserService extends UserService {
-
+  private val builder = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a")
   def filterQuery(id: Long): Query[Person, PersonRow, Seq] =
     Person.filter(_.id === id)
 
@@ -52,9 +54,10 @@ object UserService extends UserService {
 
   override def add(user: UserDto): Future[Option[PersonRow]] = db.run {
     val salt = generateSalt
+    val localDateTime = new LocalDateTime();
     for {
       pid <- doAddPassword(PasswordRow(0, Some(user.password.bcrypt(salt)), Some(salt)))
-      userId <- doAddPerson(PersonRow(0, user.email, user.name, user.surname, pid, "now"))
+      userId <- doAddPerson(PersonRow(0, user.email, user.name, user.surname, pid, builder.print(localDateTime)))
       user <- getPerson(userId)
     } yield user
   }

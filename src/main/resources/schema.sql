@@ -87,6 +87,7 @@ CREATE TABLE "time_slot"
     id bigserial NOT NULL,
     "start" integer NOT NULL,
     "end" integer NOT NULL,
+    "is_available" boolean NOT NULL,
     CONSTRAINT "time_slot_pkey" PRIMARY KEY (id)
 )
 WITH (

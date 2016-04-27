@@ -18,9 +18,9 @@ object DatabaseSupportSpec {
     PasswordRow(3, Some("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO6AADKjaGqh/6l3RzWitAWelWCQxffUC"), Option("$2a$10$U3gBQ50FY5qiQ5XeQKgWwO"))
   )
   lazy val users = Seq(
-    UserRow(1, "test1@test.com", "name1", "surname1", 1, "now"),
-    UserRow(2, "test2@test.com", "name2", "surname2", 2, "now"),
-    UserRow(3, "test3@test.com", "name3", "surname3", 3, "now")
+    PersonRow(1, "test1@test.com", "name1", "surname1", 1, "now"),
+    PersonRow(2, "test2@test.com", "name2", "surname2", 2, "now"),
+    PersonRow(3, "test3@test.com", "name3", "surname3", 3, "now")
   )
 }
 

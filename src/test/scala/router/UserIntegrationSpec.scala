@@ -30,14 +30,14 @@ class UserIntegrationSpec extends Specification with Specs2RouteTest with UserRo
   "Users Endpoint#users" should {
     "return a list of users for GET requests to users path" in this {
       Get("/users") ~> addCredentials(user) ~> userOperations ~> check {
-        responseAs[Seq[User]] === DatabaseSupportSpec.users
+        responseAs[Seq[Person]] === DatabaseSupportSpec.users
       }
     }
 
 
     "return a single user for GET requests to users path" in this {
       Get("/users/1") ~> addCredentials(user) ~> userOperations ~> check {
-        responseAs[User] === DatabaseSupportSpec.users.head
+        responseAs[Person] === DatabaseSupportSpec.users.head
       }
     }
 
@@ -50,7 +50,7 @@ class UserIntegrationSpec extends Specification with Specs2RouteTest with UserRo
     "return the correct user for POST requests to users path" in this {
       Post("/users", UserDto("test4@gmail.com", "name4", "surname4", "password1")) ~> addCredentials(user) ~> userOperations ~> check {
         status mustEqual StatusCodes.Created
-        responseAs[User] === UserRow(4, "test4@gmail.com", "name4", "surname4", 4, "now")
+        responseAs[Person] === PersonRow(4, "test4@gmail.com", "name4", "surname4", 4, "now")
       }
     }
   }
