@@ -12,8 +12,6 @@ import scala.concurrent.duration._
 
 object Boot extends App {
 
-  UserService.initDb()
-
   // we need an ActorSystem to host our application in
   implicit val system = ActorSystem(app.systemName)
 

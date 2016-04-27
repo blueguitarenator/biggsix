@@ -1,14 +1,14 @@
 package router
 
 import com.wordnik.swagger.annotations._
+import dao.Tables.UserRow
 import spray.routing._
-import model.User
 
 // Trying to not pollute the code with annotations
 @Api(value = "/users", description = "Operations for users.", consumes= "application/json",  produces = "application/json")
 trait UserRouterDoc {
 
-    @ApiOperation(value = "Get a user by id", httpMethod = "GET", response = classOf[User])
+    @ApiOperation(value = "Get a user by id", httpMethod = "GET", response = classOf[UserRow])
     @ApiImplicitParams(Array(
       new ApiImplicitParam(name = "userId", value="ID of the user that needs to retrieved", required = true, dataType = "integer", paramType = "path" )
     ))
@@ -18,7 +18,7 @@ trait UserRouterDoc {
     ))
     def readRoute: Route
 
-    @ApiOperation(value = "Get all the users", httpMethod = "GET", response = classOf[List[User]])
+    @ApiOperation(value = "Get all the users", httpMethod = "GET", response = classOf[List[UserRow]])
     def readAllRoute: Route
 
     @ApiOperation(value = "Delete a user by id", httpMethod = "DELETE", response = classOf[Int])

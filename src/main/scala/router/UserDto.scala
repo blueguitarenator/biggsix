@@ -12,10 +12,10 @@ case class UserDto(
   email: String,
 
   @(ApiModelProperty @field)(value = "name of the user")
-  name: Option[String] = None,
+  name: String,
 
   @(ApiModelProperty @field)(value = "surname of the user")
-  surname: Option[String] = None,
+  surname: String,
 
   @(ApiModelProperty @field)(required = true, value = "password of the user")
   password: String )

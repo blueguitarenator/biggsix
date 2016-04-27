@@ -1,6 +1,7 @@
 package router
 
-import model.{ AuthInfo, User, UserPassword }
+import dao.Tables._
+import model.{ AuthInfo }
 import service.UserService
 import spray.routing.authentication.{ BasicAuth, UserPass }
 import spray.routing.directives.AuthMagnet
@@ -21,8 +22,8 @@ trait Authenticator {
      }{
        userPass =>
          // TODO Better take a look at Scalaz OptionT http://underscore.io/blog/posts/2013/12/20/scalaz-monad-transformers.html#fnref:scalaz-contrib
-         userService.get(userPass.user).map(_.map{
-           case tup : (User, UserPassword) if tup._2.passwordMatches(userPass.pass) => AuthInfo(tup._1)
+         userService.getUser(userPass.user).map(_.map{
+           case tup : (UserRow, PasswordRow) if userService.passwordMatches(tup._2, userPass.pass) => AuthInfo(tup._1)
          })
      }
     }

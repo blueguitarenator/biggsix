@@ -1,5 +1,7 @@
 package router
 
+import dao.Tables._
+
 import service.UserService
 import spray.http.MediaTypes._
 import spray.http.StatusCodes._
@@ -77,7 +79,6 @@ trait UserRouter extends HttpService with UserRouterDoc {
     get{
       path("sayhi"){
         detach(){
-          UserService.initDb()
           complete("Hi ho")
         }
       }
