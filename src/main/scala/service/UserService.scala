@@ -4,13 +4,12 @@ import router.UserDto
 import slick.dbio.DBIO
 import utils.DatabaseConfig._
 import utils.DatabaseConfig.profile.api._
-import dao.Tables._
+import _root_.dao.Tables._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import com.github.t3hnar.bcrypt.{Password, generateSalt}
 import org.joda.time.LocalDateTime
-import org.joda.time.format.DateTimeFormat
 
 trait UserService {
 
@@ -29,8 +28,8 @@ trait UserService {
   //def populatePerson: UserDto => Person = (userDto: UserDto) => Person(0, userDto.email, userDto.name, userDto.surname)
 }
 
-object UserService extends UserService {
-  private val builder = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a")
+object UserService extends UserService with TimestampHelper {
+//  private val builder = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a")
   def filterQuery(id: Long): Query[Person, PersonRow, Seq] =
     Person.filter(_.id === id)
 
@@ -57,7 +56,7 @@ object UserService extends UserService {
     val localDateTime = new LocalDateTime();
     for {
       pid <- doAddPassword(PasswordRow(0, Some(user.password.bcrypt(salt)), Some(salt)))
-      userId <- doAddPerson(PersonRow(0, user.email, user.name, user.surname, pid, builder.print(localDateTime)))
+      userId <- doAddPerson(PersonRow(0, user.email, user.name, user.surname, pid, getTimestamp()))
       user <- getPerson(userId)
     } yield user
   }

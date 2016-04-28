@@ -15,7 +15,7 @@ create table "person"
 "first_name" VARCHAR(254) NOT NULL,
 "last_name" VARCHAR(254) NOT NULL,
 "password_id" bigint NOT NULL,
-"row_timestamp" character varying NOT NULL,
+"row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "password_FK" FOREIGN KEY (password_id)
           REFERENCES "password" (id) MATCH SIMPLE
           ON UPDATE RESTRICT ON DELETE CASCADE
@@ -34,7 +34,7 @@ CREATE TABLE "location"
   "name" character varying NOT NULL,
   "address" character varying NOT NULL,
   "phone" character varying NOT NULL,
-  "row_timestamp" character varying NOT NULL,
+  "row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
   CONSTRAINT "location_pkey" PRIMARY KEY (id)
 )
 WITH (
@@ -50,7 +50,7 @@ CREATE TABLE "provider"
     "last_name" character varying NOT NULL,
     "phone" character varying NOT NULL,
     "location_id" bigint NOT NULL,
-    "row_timestamp" character varying NOT NULL,
+    "row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "provider_pkey" PRIMARY KEY (id),
     CONSTRAINT "location_FK" FOREIGN KEY (location_id)
           REFERENCES "location" (id) MATCH SIMPLE
@@ -70,7 +70,7 @@ CREATE TABLE "customer"
     "last_name" character varying NOT NULL,
     "phone" character varying NOT NULL,
     "location_id" bigint NOT NULL,
-    "row_timestamp" character varying NOT NULL,
+    "row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "customer_pkey" PRIMARY KEY (id),
     CONSTRAINT "location_FK" FOREIGN KEY (location_id)
           REFERENCES "location" (id) MATCH SIMPLE
@@ -103,7 +103,7 @@ CREATE TABLE "appointment"
     "date" TIMESTAMP WITH TIME ZONE NOT NULL,
     "provider_id" bigint NOT NULL,
     "time_slot_id" bigint NOT NULL,
-    "row_timestamp" character varying NOT NULL,
+    "row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "appointment_pkey" PRIMARY KEY (id),
     CONSTRAINT "provider_FK" FOREIGN KEY (provider_id)
           REFERENCES "provider" (id) MATCH SIMPLE,

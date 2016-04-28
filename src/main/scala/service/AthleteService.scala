@@ -10,7 +10,7 @@ trait AthleteService {
   def getAll(): Future[Seq[AppointmentRow]]
 }
 
-object AthleteService extends AthleteService {
+object AthleteService extends AthleteService with TimestampHelper {
   override def getAll(): Future[Seq[AppointmentRow]] = db.run {
     getAllAppointment
   }

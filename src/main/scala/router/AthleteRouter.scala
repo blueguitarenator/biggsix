@@ -20,7 +20,7 @@ trait AthleteRouter extends HttpService {
       authenticate(basicUserAuthenticator) { authInfo =>
         respondWithMediaType(`application/json`) {
           onComplete(athleteService.getAll) {
-            case Success(appts) => complete("asdf")
+            case Success(appts) => complete("appts")
             case Failure(ex) => complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
           }
         }
