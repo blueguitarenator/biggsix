@@ -97,11 +97,10 @@ ALTER TABLE "time_slot"
     OWNER TO biggsix;
 
 
-
 CREATE TABLE "appointment"
 (
     id bigserial NOT NULL,
-    "date" date NOT NULL,
+    "date" TIMESTAMP WITH TIME ZONE NOT NULL,
     "provider_id" bigint NOT NULL,
     "time_slot_id" bigint NOT NULL,
     "row_timestamp" character varying NOT NULL,

@@ -18,7 +18,7 @@ class UserIntegrationSpec extends Specification with Specs2RouteTest with UserRo
   override val userService = UserService
 
   val user = BasicHttpCredentials("test1@test.com", "password1")
-
+/*
   "Users Endpoint" should {
     "leave GET requests to other paths unhandled" in this {
       Get("/kermit") ~> addCredentials(user) ~> userOperations ~>  check  {
@@ -54,6 +54,6 @@ class UserIntegrationSpec extends Specification with Specs2RouteTest with UserRo
       }
     }
   }
-
+*/
 
 }

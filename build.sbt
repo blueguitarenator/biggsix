@@ -16,8 +16,8 @@ libraryDependencies ++= {
     "com.typesafe.akka"   %%  "akka-testkit"   % akkaVersion   % "test",
     "org.specs2"          %%  "specs2-core"    % "2.3.11"      % "test",
     "com.typesafe.slick"  %%  "slick"          % "3.0.0",
-    "org.slf4j"            % "slf4j-nop"       % "1.7.7",
-    "org.slf4j"            % "slf4j-api"       % "1.7.7",
+    "org.slf4j"            %  "slf4j-nop"      % "1.7.7",
+    "org.slf4j"            %  "slf4j-api"      % "1.7.7",
     "org.scalatest"        %  "scalatest_2.11" % "2.2.1",
     "com.typesafe"         %  "config"         % "1.2.1",
     "postgresql"           %  "postgresql"     % "9.1-901.jdbc4",
@@ -26,7 +26,19 @@ libraryDependencies ++= {
     "org.webjars"          %  "swagger-ui"     % "2.0.12",
     "com.github.t3hnar"   %%  "scala-bcrypt"   % "2.4",
     "org.mindrot"          %  "jbcrypt"        % "0.3m",
-    "com.typesafe.slick"  %%  "slick-codegen" % "3.0.0" % "compile"
+    "com.typesafe.slick"  %%  "slick-codegen"  % "3.0.0" % "compile",
+    "com.jason-goodwin"   %%  "authentikat-jwt" % "0.4.1"
+  )
+}
+
+libraryDependencies ++= {
+  val slickVersion = "3.0.0"
+  val slickJodaMapperVersion = "2.0.0"
+  Seq(
+    "com.typesafe.slick" %% "slick" % slickVersion,
+    "com.github.tototoshi" %% "slick-joda-mapper" % slickJodaMapperVersion,
+    "joda-time" % "joda-time" % "2.7",
+    "org.joda" % "joda-convert" % "1.7"
   )
 }
 

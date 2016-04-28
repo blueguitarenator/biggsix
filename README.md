@@ -4,6 +4,10 @@
 
 Seed for activator
 
+### Debugging
+- sbt -jvm-debug 9999 run
+- Remote Run Config with port 9999
+
 Key features:
 
 * Basic Http Authentication
