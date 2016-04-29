@@ -33,7 +33,7 @@ class ApiRouterActor(service: UserService, athService: AthleteService) extends A
   // or timeout handling
   def receive = runRoute(
     dashboardOperations ~
-      trainerqOperations ~
+      trainerOperations ~
     userOperations ~
     swaggerService.routes ~
     get {

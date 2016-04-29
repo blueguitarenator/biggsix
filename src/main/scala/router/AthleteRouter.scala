@@ -1,12 +1,8 @@
 package router
 
-import java.sql.Timestamp
-
-import _root_.dao.Tables.AppointmentRow
 import service.AthleteService
 import spray.http.MediaTypes._
 import spray.http.StatusCodes._
-import spray.json.{DefaultJsonProtocol, DeserializationException, JsNumber, JsValue, JsonFormat}
 import spray.routing._
 
 import scala.concurrent.ExecutionContext.Implicits.global
