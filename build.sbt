@@ -27,7 +27,7 @@ libraryDependencies ++= {
     "com.github.t3hnar"   %%  "scala-bcrypt"   % "2.4",
     "org.mindrot"          %  "jbcrypt"        % "0.3m",
     "com.typesafe.slick"  %%  "slick-codegen"  % "3.0.0" % "compile",
-    "com.jason-goodwin"   %%  "authentikat-jwt" % "0.4.1"
+    "com.github.kikuomax" %% "spray-jwt"       % "0.0.3"
   )
 }
 

@@ -17,7 +17,7 @@ object UserJsonProtocol extends DefaultJsonProtocol {
       case _ => throw new DeserializationException("Date expected")
     }
   }
-  implicit val format = jsonFormat6(PersonRow.apply)
+  implicit val format = jsonFormat7(PersonRow.apply)
 }
 
 object AppointmentJsonProtocol extends DefaultJsonProtocol {

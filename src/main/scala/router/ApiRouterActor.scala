@@ -10,10 +10,13 @@ import scala.reflect.runtime.universe._
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
-class ApiRouterActor(service: UserService, athService: AthleteService) extends Actor with AthleteRouter with TrainerRouter with UserRouter with ActorLogging with Authenticator {
+class ApiRouterActor(service: UserService, athService: AthleteService) extends Actor with ExampleRouter with AthleteRouter with TrainerRouter with UserRouter with ActorLogging with Authenticator {
 
   override val userService = service
   override val athleteService = athService
+
+  // supplies the default dispatcher as the implicit execution context
+  override implicit lazy val executionContext = context.dispatcher
 
   val swaggerService = new SwaggerHttpService {
     override def apiTypes = Seq(typeOf[UserRouterDoc])
@@ -32,6 +35,7 @@ class ApiRouterActor(service: UserService, athService: AthleteService) extends A
   // other things here, like request stream processing
   // or timeout handling
   def receive = runRoute(
+    exampleRoutes ~
     dashboardOperations ~
       trainerOperations ~
     userOperations ~

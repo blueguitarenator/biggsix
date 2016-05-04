@@ -14,6 +14,7 @@ create table "person"
 "email" VARCHAR(254) NOT NULL,
 "first_name" VARCHAR(254) NOT NULL,
 "last_name" VARCHAR(254) NOT NULL,
+"phone" character varying NOT NULL,
 "password_id" bigint NOT NULL,
 "row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "password_FK" FOREIGN KEY (password_id)
@@ -46,15 +47,16 @@ ALTER TABLE "location"
 CREATE TABLE "provider"
 (
     id bigserial NOT NULL,
-    "first_name" character varying NOT NULL,
-    "last_name" character varying NOT NULL,
-    "phone" character varying NOT NULL,
+    "person_id" bigint NOT NULL,
     "location_id" bigint NOT NULL,
     "row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "provider_pkey" PRIMARY KEY (id),
     CONSTRAINT "location_FK" FOREIGN KEY (location_id)
           REFERENCES "location" (id) MATCH SIMPLE
-          ON UPDATE RESTRICT ON DELETE CASCADE
+          ON UPDATE RESTRICT ON DELETE CASCADE,
+    CONSTRAINT "person_FK" FOREIGN KEY (person_id)
+        REFERENCES "person" (id) MATCH SIMPLE
+        ON UPDATE RESTRICT ON DELETE CASCADE
 )
 WITH (
     OIDS=FALSE
@@ -66,14 +68,15 @@ ALTER TABLE "provider"
 CREATE TABLE "customer"
 (
     id bigserial NOT NULL,
-    "first_name" character varying NOT NULL,
-    "last_name" character varying NOT NULL,
-    "phone" character varying NOT NULL,
+    "person_id" bigint NOT NULL,
     "location_id" bigint NOT NULL,
     "row_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL,
     CONSTRAINT "customer_pkey" PRIMARY KEY (id),
     CONSTRAINT "location_FK" FOREIGN KEY (location_id)
           REFERENCES "location" (id) MATCH SIMPLE
+          ON UPDATE RESTRICT ON DELETE CASCADE,
+    CONSTRAINT "person_FK" FOREIGN KEY (person_id)
+          REFERENCES "person" (id) MATCH SIMPLE
           ON UPDATE RESTRICT ON DELETE CASCADE
 )
 WITH (

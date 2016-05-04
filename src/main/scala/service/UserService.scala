@@ -10,6 +10,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import com.github.t3hnar.bcrypt.{Password, generateSalt}
 import org.joda.time.LocalDateTime
+import spray.routing.authentication.UserPass
 
 trait UserService {
 
@@ -24,6 +25,8 @@ trait UserService {
   def delete(id: Long):Future[Int]
 
   def passwordMatches(passwordRow: PasswordRow, password: String): Boolean
+
+  def myUserPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]]
 
   //def populatePerson: UserDto => Person = (userDto: UserDto) => Person(0, userDto.email, userDto.name, userDto.surname)
 }
@@ -56,7 +59,7 @@ object UserService extends UserService with TimestampHelper {
     val localDateTime = new LocalDateTime();
     for {
       pid <- doAddPassword(PasswordRow(0, Some(user.password.bcrypt(salt)), Some(salt)))
-      userId <- doAddPerson(PersonRow(0, user.email, user.name, user.surname, pid, getTimestamp()))
+      userId <- doAddPerson(PersonRow(0, user.email, user.name, user.surname, "867-5309", pid, getTimestamp()))
       user <- getPerson(userId)
     } yield user
   }
@@ -72,6 +75,19 @@ object UserService extends UserService with TimestampHelper {
       user <- dao.Tables.Person.filter(_.email === email)
       password <- dao.Tables.Password.filter(_.id === user.id)
     } yield (user, password)).result.headOption
+  }
+
+  override def myUserPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = {
+    userPass match {
+      case Some(user) => doGetUserString(user)
+      case _ => Future{None}
+    }
+  }
+
+  private def doGetUserString(user: UserPass): Future[Option[String]] = {
+    getPerson(user.user).map(_.map{
+      case tup : (PersonRow, PasswordRow) if passwordMatches(tup._2, user.pass) => tup._1.email
+    })
   }
 
   private def getAllPerson(): DBIO[Seq[PersonRow]] = Person.result
