@@ -156,7 +156,7 @@ trait ExampleRouter extends HttpService with JwtDirectives {
                 // John and Alice have the privilege
                 def testPostPrivilege(claim: JWTClaimsSet): Option[String] = {
                   Option(claim.getSubject()) flatMap {
-                    case user: String if user == "John" || user == "Alice" =>
+                    case user: String if user == "John" || user == "Alice" || user == "schwep@test.com" =>
                       Some(user)
                     case _ => None
                   }
