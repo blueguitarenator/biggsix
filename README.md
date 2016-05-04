@@ -1,12 +1,10 @@
-## Spray-swagger-slick-seed
-[![Build Status](https://travis-ci.org/Gneotux/spray-swagger-slick-seed.svg?branch=master)](https://travis-ci.org/Gneotux/spray-swagger-slick-seed)
-[![Coverage Status](https://coveralls.io/repos/Gneotux/spray-swagger-slick-seed/badge.svg?branch=master&service=github)](https://coveralls.io/github/Gneotux/spray-swagger-slick-seed?branch=master)
+## BiggSix - seeded from (Spray-swagger-slick-seed)
 
-Seed for activator
 
 ### Debugging
 - sbt -jvm-debug 9999 run
 - Remote Run Config with port 9999
+- UI is at ~/Documents/code/spray-jwt/example. Run with: > node service.js
 
 Key features:
 
@@ -37,12 +35,4 @@ Follow these steps to get started:
 
 5. Browse to [http://localhost:8080](http://localhost:8080/)
 
-
-6. Learn more at
-
-http://www.spray.io/
-https://github.com/gettyimages/spray-swagger
-http://slick.typesafe.com/news/2015/02/20/slick-3.0.0-RC1-released.html
-http://etorreborre.github.io/specs2/guide/org.specs2.guide.QuickStart.html#Quick+Start
-http://www.tecnoguru.com/blog/2014/07/07/implementing-http-basic-authentication-with-spray/
 

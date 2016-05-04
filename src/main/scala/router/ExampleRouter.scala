@@ -1,15 +1,12 @@
 package router
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import akka.actor.Actor
-import akka.event.Logging
 import com.github.kikuomax.spray.jwt.{JwtDirectives, JwtSignature}
 import com.github.kikuomax.spray.jwt.JwsExtractor.extractJwsFromCookie
 import com.github.kikuomax.spray.jwt.JwtClaimBuilder._
 import com.github.kikuomax.spray.jwt.JwtClaimVerifier._
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jwt.JWTClaimsSet
-import _root_.dao.Tables.PersonRow
 import service.UserService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -19,29 +16,14 @@ import spray.http.HttpCookie
 import spray.http.HttpHeaders.{Host, `Access-Control-Allow-Credentials`, `Access-Control-Allow-Headers`, `Access-Control-Allow-Origin`}
 import spray.http.{HttpOrigin, SomeOrigins}
 import spray.http.MediaTypes.`application/json`
-import spray.http.StatusCodes._
 import spray.routing.authentication.{BasicAuth, UserPass}
 import spray.routing.Directive0
 import spray.routing.HttpService
 import spray.routing.RejectionHandler
 
-import scala.util.{Failure, Success}
-
-/** An `Actor` that provides [[ExampleRouter]]. */
-//class ExampleServiceActor extends Actor with ExampleService {
-//  def actorRefFactory = context
-//
-//  // supplies the default dispatcher as the implicit execution context
-//  override implicit lazy val executionContext = context.dispatcher
-//
-//  // forwards requests to the route
-//  def receive = runRoute(route)
-//}
 
 /** An example service. */
 trait ExampleRouter extends HttpService with JwtDirectives {
-
-  self: Authenticator =>
 
   // you can use Actor's dispatcher as the execution context
   implicit val executionContext: ExecutionContext
@@ -60,16 +42,6 @@ trait ExampleRouter extends HttpService with JwtDirectives {
   private val tokenCookieName = "exampleToken"
 
   private val userService = UserService
-
-  // user authentication function
-//  def myUserPassAuthenticator(userPass: Option[UserPass]): Future[Option[String]] = {
-////    onComplete(userService.get(0)) {
-////      case Success(Some(user)) => Option(user.email)
-////      case Success(None) => None
-////      case Failure(ex) => None
-////    }
-//    Future {"asdf"}
-//  }
 
   // HttpOrigin of the client interface
   private val exampleClientOrigin = HttpOrigin("http", Host("localhost", 8081))
