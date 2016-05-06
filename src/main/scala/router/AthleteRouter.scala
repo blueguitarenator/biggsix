@@ -1,5 +1,6 @@
 package router
 
+import com.typesafe.scalalogging.LazyLogging
 import service.AthleteService
 import spray.http.MediaTypes._
 import spray.http.StatusCodes._
@@ -8,7 +9,7 @@ import spray.routing._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
-trait AthleteRouter extends HttpService {
+trait AthleteRouter extends HttpService with LazyLogging {
   self: Authenticator =>
 
   val athleteService: AthleteService

@@ -1,23 +1,25 @@
 package router
 
+import com.typesafe.scalalogging.LazyLogging
 import service.UserService
 import spray.http.MediaTypes._
 import spray.http.StatusCodes._
 import spray.httpx.SprayJsonSupport._
-import spray.routing.{ HttpService, Route }
+import spray.routing.{HttpService, Route}
+
 import scala.util.{Failure, Success}
 import scala.concurrent.ExecutionContext.Implicits.global
 import router.UserJsonProtocol._
 
 // this trait defines our service behavior independently from the service actor
-trait UserRouter extends HttpService with UserRouterDoc {
+trait UserRouter extends HttpService with LazyLogging {
   self: Authenticator =>
 
   val userService: UserService
 
   val userOperations: Route = postRoute ~ readRoute ~ readAllRoute ~ deleteRoute
 
-  override def readRoute = path("users" / IntNumber) { userId =>
+  def readRoute = path("users" / IntNumber) { userId =>
       get {
         authenticate(basicUserAuthenticator) { authInfo =>
           respondWithMediaType(`application/json`) {
@@ -31,7 +33,7 @@ trait UserRouter extends HttpService with UserRouterDoc {
       }
     }
 
-  override def readAllRoute = path("users") {
+  def readAllRoute = path("users") {
       get {
         authenticate(basicUserAuthenticator) { authInfo =>
           respondWithMediaType(`application/json`) {
@@ -44,7 +46,7 @@ trait UserRouter extends HttpService with UserRouterDoc {
       }
     }
 
-  override def deleteRoute = path("users" / IntNumber) { userId =>
+  def deleteRoute = path("users" / IntNumber) { userId =>
       delete {
         authenticate(basicUserAuthenticator) { authInfo =>
           respondWithMediaType(`application/json`) {
@@ -57,7 +59,7 @@ trait UserRouter extends HttpService with UserRouterDoc {
       }
     }
 
-  override def postRoute: Route = path("users") {
+  def postRoute: Route = path("users") {
       post {
         authenticate(basicUserAuthenticator) { authInfo =>
           entity(as[UserDto]) { user =>

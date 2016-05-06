@@ -1,6 +1,8 @@
 package service
 
-import dao.Tables._
+import com.typesafe.scalalogging.LazyLogging
+import _root_.dao.Tables._
+
 import scala.concurrent.Future
 import slick.dbio.DBIO
 import utils.DatabaseConfig._
@@ -11,7 +13,7 @@ trait AthleteService {
   def get(): Future[Option[AppointmentRow]]
 }
 
-object AthleteService extends AthleteService with TimestampHelper {
+object AthleteService extends AthleteService with TimestampHelper with LazyLogging {
   override def getAll(): Future[Seq[AppointmentRow]] = db.run {
     getAllAppointment
   }

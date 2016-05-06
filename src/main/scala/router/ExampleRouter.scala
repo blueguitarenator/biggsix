@@ -7,6 +7,7 @@ import com.github.kikuomax.spray.jwt.JwtClaimBuilder._
 import com.github.kikuomax.spray.jwt.JwtClaimVerifier._
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jwt.JWTClaimsSet
+import com.typesafe.scalalogging.LazyLogging
 import service.UserService
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -23,7 +24,7 @@ import spray.routing.RejectionHandler
 
 
 /** An example service. */
-trait ExampleRouter extends HttpService with JwtDirectives {
+trait ExampleRouter extends HttpService with JwtDirectives with LazyLogging {
 
   // you can use Actor's dispatcher as the execution context
   implicit val executionContext: ExecutionContext
@@ -71,7 +72,7 @@ trait ExampleRouter extends HttpService with JwtDirectives {
         } ~
           path("login") {
             // autenticates a user and a password
-
+            logger.debug("Login happening")
             parameter("cookie" ? false) { usesCookie =>
               authenticate(BasicAuth(
                 jwtAuthenticator(userService.myUserPassAuthenticator _), "secure site"))
@@ -94,6 +95,7 @@ trait ExampleRouter extends HttpService with JwtDirectives {
           } ~
           path("messages") {
             get {
+              //logger.debug("Getting messages pre-auth/pre privilege")
               // privileges GET access to a given user
               // every user has the privilege
               def testGetPrivilege(claim: JWTClaimsSet): Option[String] =

@@ -1,23 +1,14 @@
 package router
 
-import com.wordnik.swagger.annotations.{ ApiModel, ApiModelProperty }
 import spray.json.DefaultJsonProtocol
 
-import scala.annotation.meta.field
-
-
-@ApiModel(description = "A User creation entity")
 case class UserDto(
-  @(ApiModelProperty @field)(required = true, value = "email of the user")
   email: String,
 
-  @(ApiModelProperty @field)(value = "name of the user")
   name: String,
 
-  @(ApiModelProperty @field)(value = "surname of the user")
   surname: String,
 
-  @(ApiModelProperty @field)(required = true, value = "password of the user")
   password: String )
 
 object UserDto extends DefaultJsonProtocol{

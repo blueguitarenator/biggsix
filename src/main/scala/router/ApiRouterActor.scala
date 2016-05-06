@@ -1,16 +1,12 @@
 package router
 
-import akka.actor.{Actor, ActorLogging}
-import com.gettyimages.spray.swagger.SwaggerHttpService
-import com.wordnik.swagger.model.ApiInfo
+import akka.actor.{Actor}
+import com.typesafe.scalalogging.{LazyLogging}
 import service.{AthleteService, UserService}
-
-import scala.reflect.runtime.universe._
-
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
-class ApiRouterActor(service: UserService, athService: AthleteService) extends Actor with ExampleRouter with AthleteRouter with TrainerRouter with UserRouter with ActorLogging with Authenticator {
+class ApiRouterActor(service: UserService, athService: AthleteService) extends Actor with LazyLogging with ExampleRouter with AthleteRouter with TrainerRouter with UserRouter with Authenticator {
 
   override val userService = service
   override val athleteService = athService
@@ -18,14 +14,14 @@ class ApiRouterActor(service: UserService, athService: AthleteService) extends A
   // supplies the default dispatcher as the implicit execution context
   override implicit lazy val executionContext = context.dispatcher
 
-  val swaggerService = new SwaggerHttpService {
-    override def apiTypes = Seq(typeOf[UserRouterDoc])
-    override def apiVersion = "0.1"
-    override def baseUrl = "/" // let swagger-ui determine the host and port
-    override def docsPath = "api-docs"
-    override def actorRefFactory = context
-    override def apiInfo = Some(new ApiInfo("Api users", "", "", "", "", ""))
-  }
+//  val swaggerService = new SwaggerHttpService {
+//    override def apiTypes = Seq(typeOf[UserRouterDoc])
+//    override def apiVersion = "0.1"
+//    override def baseUrl = "/" // let swagger-ui determine the host and port
+//    override def docsPath = "api-docs"
+//    override def actorRefFactory = context
+//    override def apiInfo = Some(new ApiInfo("Api users", "", "", "", "", ""))
+//  }
 
   // the HttpService trait defines only one abstract member, which
   // connects the services environment to the enclosing actor or test
@@ -38,17 +34,17 @@ class ApiRouterActor(service: UserService, athService: AthleteService) extends A
     exampleRoutes ~
     dashboardOperations ~
       trainerOperations ~
-    userOperations ~
-    swaggerService.routes ~
-    get {
-      pathPrefix("") { pathEndOrSingleSlash {
-          getFromResource("swagger-ui/index.html")
-        }
-      } ~
-      pathPrefix("webjars") {
-        getFromResourceDirectory("META-INF/resources/webjars")
-      }
-    }
+    userOperations
+//    swaggerService.routes
+//    get {
+//      pathPrefix("") { pathEndOrSingleSlash {
+//          getFromResource("swagger-ui/index.html")
+//        }
+//      } ~
+//      pathPrefix("webjars") {
+//        getFromResourceDirectory("META-INF/resources/webjars")
+//      }
+//    }
   )
 
 }

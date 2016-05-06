@@ -9,6 +9,7 @@ import _root_.dao.Tables._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import com.github.t3hnar.bcrypt.{Password, generateSalt}
+import com.typesafe.scalalogging.LazyLogging
 import org.joda.time.LocalDateTime
 import spray.routing.authentication.UserPass
 
@@ -31,7 +32,7 @@ trait UserService {
   //def populatePerson: UserDto => Person = (userDto: UserDto) => Person(0, userDto.email, userDto.name, userDto.surname)
 }
 
-object UserService extends UserService with TimestampHelper {
+object UserService extends UserService with TimestampHelper with LazyLogging {
 //  private val builder = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss a")
   def filterQuery(id: Long): Query[Person, PersonRow, Seq] =
     Person.filter(_.id === id)
@@ -46,6 +47,7 @@ object UserService extends UserService with TimestampHelper {
   }
 
   override def passwordMatches(passwordRow: PasswordRow, password: String): Boolean = {
+    logger.debug("Checking if password matches")
     passwordRow.salt match {
       case Some(salt) =>
         passwordRow.hashedPassword.contains(password.bcrypt(salt))
